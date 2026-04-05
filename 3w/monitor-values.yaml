@@ -1,0 +1,114 @@
+prometheus:
+  prometheusSpec:
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    additionalScrapeConfigs:
+      # apiserver metrics
+      - job_name: apiserver-metrics
+        kubernetes_sd_configs:
+        - role: endpoints
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+          insecure_skip_verify: true
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        relabel_configs:
+        - source_labels:
+            [
+              __meta_kubernetes_namespace,
+              __meta_kubernetes_service_name,
+              __meta_kubernetes_endpoint_port_name,
+            ]
+          action: keep
+          regex: default;kubernetes;https
+      # Scheduler metrics
+      - job_name: 'ksh-metrics'
+        kubernetes_sd_configs:
+        - role: endpoints
+        metrics_path: /apis/metrics.eks.amazonaws.com/v1/ksh/container/metrics
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+          insecure_skip_verify: true
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        relabel_configs:
+        - source_labels:
+            [
+              __meta_kubernetes_namespace,
+              __meta_kubernetes_service_name,
+              __meta_kubernetes_endpoint_port_name,
+            ]
+          action: keep
+          regex: default;kubernetes;https
+      # Controller Manager metrics
+      - job_name: 'kcm-metrics'
+        kubernetes_sd_configs:
+        - role: endpoints
+        metrics_path: /apis/metrics.eks.amazonaws.com/v1/kcm/container/metrics
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+          insecure_skip_verify: true
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        relabel_configs:
+        - source_labels:
+            [
+              __meta_kubernetes_namespace,
+              __meta_kubernetes_service_name,
+              __meta_kubernetes_endpoint_port_name,
+            ]
+          action: keep
+          regex: default;kubernetes;https
+
+  # Enable vertical pod autoscaler support for prometheus-operator
+  #verticalPodAutoscaler:
+  #  enabled: true
+
+  ingress:
+    enabled: true
+    ingressClassName: alb
+    hosts: 
+      - prometheus.eks.stellan.in
+    paths: 
+      - /*
+    annotations:
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
+      alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:370489250264:certificate/9e60a263-089f-44d1-b822-ac67c58141b3
+      alb.ingress.kubernetes.io/success-codes: 200-399
+      alb.ingress.kubernetes.io/load-balancer-name: myeks-ingress-alb
+      alb.ingress.kubernetes.io/group.name: study
+      alb.ingress.kubernetes.io/ssl-redirect: '443'
+
+grafana:
+  defaultDashboardsTimezone: Asia/Seoul
+  adminPassword: prom-operator
+
+  ingress:
+    enabled: true
+    ingressClassName: alb
+    hosts: 
+      - grafana.eks.stellan.in
+    paths: 
+      - /*
+    annotations:
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      alb.ingress.kubernetes.io/target-type: ip
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'
+      alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:370489250264:certificate/9e60a263-089f-44d1-b822-ac67c58141b3
+      alb.ingress.kubernetes.io/success-codes: 200-399
+      alb.ingress.kubernetes.io/load-balancer-name: myeks-ingress-alb
+      alb.ingress.kubernetes.io/group.name: study
+      alb.ingress.kubernetes.io/ssl-redirect: '443'
+
+kubeControllerManager:
+  enabled: false
+kubeEtcd:
+  enabled: false
+kubeScheduler:
+  enabled: false
+prometheus-windows-exporter:
+  prometheus:
+    monitor:
+      enabled: false
