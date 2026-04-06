@@ -93,6 +93,11 @@ resource "kubernetes_manifest" "karpenter_node_pool" {
               key      = "karpenter.k8s.aws/instance-generation"
               operator = "Gt"
               values   = ["2"]
+            },
+            {
+              key      = "karpenter.k8s.aws/instance-size"
+              operator = "NotIn"
+              values   = ["nano", "micro"]
             }
           ]
         }
