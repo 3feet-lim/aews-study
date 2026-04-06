@@ -76,13 +76,13 @@ variable "github_token" {
   description = "GitHub personal access token for Flux"
   type        = string
   sensitive   = true
-  default     = ""
+  # 환경변수로 주입: export TF_VAR_github_token="ghp_xxxxx"
 }
 
 variable "flux_git_url" {
   description = "Git repository URL for Flux"
   type        = string
-  default     = "https://github.com/<your-username>/<your-repo>.git"
+  default     = "https://github.com/3feet-lim/aews-study.git"
 }
 
 variable "flux_git_branch" {
@@ -94,5 +94,5 @@ variable "flux_git_branch" {
 variable "flux_git_path" {
   description = "Path in the Git repo for Flux to sync"
   type        = string
-  default     = "./clusters/myeks"
+  default     = "./fluxcd"
 }
