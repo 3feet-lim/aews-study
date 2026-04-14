@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Git Commit & Push",
+  "description": "Git diff를 분석하여 커밋 메시지를 자동 생성하고, 커밋 후 push합니다. 사용자가 커밋 메시지를 직접 지정할 수도 있습니다.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "다음 단계를 수행해주세요:\n\n1. `git diff --staged` 를 먼저 확인하세요. staged 변경사항이 없으면 `git diff` 와 `git status` 로 unstaged 변경사항을 확인하세요.\n2. 변경사항이 전혀 없으면 \"커밋할 변경사항이 없습니다\"라고 알려주세요.\n3. unstaged 변경사항만 있으면 `git add -A` 로 모든 변경사항을 staging 하세요.\n4. diff 내용을 분석하여 Conventional Commits 형식으로 커밋 메시지를 작성하세요:\n   - 형식: `type(scope): 설명` (예: `feat(auth): 로그인 기능 추가`, `fix(api): 응답 파싱 오류 수정`)\n   - type: feat, fix, docs, style, refactor, test, chore 중 적절한 것 선택\n   - scope: 변경된 주요 모듈/디렉토리\n   - 설명: 한국어로 간결하게\n5. 만약 사용자가 이 hook을 트리거할 때 메시지를 함께 입력했다면, 그 메시지를 커밋 메시지로 사용하세요.\n6. `git commit -m \"메시지\"` 로 커밋하세요.\n7. `git push` 로 push 하세요. push 실패 시 에러 내용을 알려주세요.\n8. 최종 결과를 간단히 요약해주세요."
+  }
+}

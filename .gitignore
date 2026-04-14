@@ -2,6 +2,9 @@ backend.tf
 .terraform
 .terraform.d
 .vscode
-terraform.state
-terraform.state.backup
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate
+*.tfstate.backup
 .terraform.lock.hcl
+*.tfvars
