@@ -166,4 +166,7 @@ module "eks_ng" {
   update_config = { max_unavailable = 1 }
 
   tags = { Environment = "dev" }
+
+  # Custom Networking(ENIConfig)이 먼저 적용된 후 노드가 뜨도록
+  depends_on = [module.eks_addon_pre_node, kubernetes_manifest.eniconfig_az1, kubernetes_manifest.eniconfig_az3]
 }

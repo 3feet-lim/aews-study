@@ -65,6 +65,7 @@ module "pod_subnets" {
     { name = "${var.project_name}-pod-c-3", availability_zone_id = "apne2-az3", cidr_block = "100.64.160.0/19" },
   ]
 
+  # destroy 시 노드그룹이 먼저 삭제되어야 ENI가 정리되고 서브넷 삭제 가능
   depends_on = [module.vpc]
 }
 

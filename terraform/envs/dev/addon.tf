@@ -1,9 +1,9 @@
 ########################
-# EKS Addons
+# EKS Addons (노드그룹 전)
 ########################
 
-# VPC CNI addon (Custom Networking 활성화)
-module "eks_addon" {
+# VPC CNI + Pod Identity Agent (노드 뜨기 전에 Custom Networking 설정 필요)
+module "eks_addon_pre_node" {
   source = "../../modules/terraform-aws-eks-addon"
 
   cluster_name = module.eks.name
@@ -18,6 +18,7 @@ module "eks_addon" {
         }
       })
     },
+    { addon_name = "eks-pod-identity-agent" },
   ]
 
   depends_on = [module.eks]
@@ -41,7 +42,7 @@ resource "kubernetes_manifest" "eniconfig_az1" {
     }
   }
 
-  depends_on = [module.eks_addon]
+  depends_on = [module.eks_addon_pre_node]
 }
 
 # AZ-c 용 ENIConfig
@@ -58,5 +59,23 @@ resource "kubernetes_manifest" "eniconfig_az3" {
     }
   }
 
-  depends_on = [module.eks_addon]
+  depends_on = [module.eks_addon_pre_node]
+}
+
+########################
+# EKS Addons (노드그룹 후)
+########################
+
+# CoreDNS + kube-proxy (노드가 있어야 ACTIVE 됨)
+module "eks_addon_post_node" {
+  source = "../../modules/terraform-aws-eks-addon"
+
+  cluster_name = module.eks.name
+
+  addon = [
+    { addon_name = "kube-proxy" },
+    { addon_name = "coredns" },
+  ]
+
+  depends_on = [module.eks_ng]
 }

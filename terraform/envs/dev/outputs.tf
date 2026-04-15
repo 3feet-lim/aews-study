@@ -26,3 +26,19 @@ output "configure_kubectl" {
   description = "Configure kubectl: make sure you're logged in with the correct AWS profile and run the following command to update your kubeconfig"
   value       = "aws eks --region ${var.target_region} update-kubeconfig --name ${var.project_name}-eks"
 }
+
+########################
+# Karpenter Outputs (FluxCD HelmRelease에서 사용)
+########################
+
+output "karpenter_role_arn" {
+  value = aws_iam_role.karpenter_controller.arn
+}
+
+output "karpenter_node_role_name" {
+  value = aws_iam_role.karpenter_node.name
+}
+
+output "karpenter_sqs_queue_name" {
+  value = aws_sqs_queue.karpenter.name
+}

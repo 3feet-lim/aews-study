@@ -15,13 +15,10 @@ resource "helm_release" "flux" {
 
 ########################
 # FluxCD Bootstrap
-# flux_bootstrap_enabled = true 로 변경 후 두 번째 apply에서 배포
 ########################
 
 # Git 인증용 Secret
 resource "kubernetes_secret" "flux_git_auth" {
-  count = var.flux_bootstrap_enabled ? 1 : 0
-
   metadata {
     name      = "flux-git-auth"
     namespace = "flux-system"
@@ -37,8 +34,6 @@ resource "kubernetes_secret" "flux_git_auth" {
 
 # GitRepository: FluxCD가 watch할 repo
 resource "kubernetes_manifest" "flux_git_repo" {
-  count = var.flux_bootstrap_enabled ? 1 : 0
-
   manifest = {
     apiVersion = "source.toolkit.fluxcd.io/v1"
     kind       = "GitRepository"
@@ -59,8 +54,6 @@ resource "kubernetes_manifest" "flux_git_repo" {
 
 # Kustomization: repo 내 특정 경로를 클러스터에 동기화
 resource "kubernetes_manifest" "flux_kustomization" {
-  count = var.flux_bootstrap_enabled ? 1 : 0
-
   manifest = {
     apiVersion = "kustomize.toolkit.fluxcd.io/v1"
     kind       = "Kustomization"

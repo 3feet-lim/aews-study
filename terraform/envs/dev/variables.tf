@@ -42,9 +42,3 @@ variable "flux_git_path" {
   type        = string
   default     = "./clusters/dev"
 }
-
-variable "flux_bootstrap_enabled" {
-  description = "FluxCD bootstrap CRD 배포 여부 (첫 apply 시 false, Helm 설치 후 true로 변경)"
-  type        = bool
-  default     = false
-}
