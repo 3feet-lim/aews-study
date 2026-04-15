@@ -1,0 +1,11 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: karpenter
+  namespace: kube-system
+spec:
+  values:
+    settings:
+      clusterName: smlim-gitops-dev-eks
+      clusterEndpoint: https://74554758C07AABFA62E0420E039F31DD.gr7.ap-northeast-2.eks.amazonaws.com
+      interruptionQueue: smlim-gitops-dev-karpenter

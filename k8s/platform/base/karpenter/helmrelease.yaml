@@ -1,0 +1,19 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: karpenter
+  namespace: kube-system
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: karpenter
+      sourceRef:
+        kind: HelmRepository
+        name: karpenter
+        namespace: flux-system
+  values:
+    settings:
+      clusterName: CLUSTER_NAME
+      clusterEndpoint: CLUSTER_ENDPOINT
+      interruptionQueue: SQS_QUEUE_NAME
