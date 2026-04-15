@@ -4,3 +4,4 @@ resources:
   - ../../base/karpenter
 patches:
   - path: karpenter-patch.yaml
+  - path: ec2nodeclass-patch.yaml
