@@ -22,3 +22,10 @@ spec:
     Name: PROJECT_NAME-karpenter-node
     managed-by: karpenter
     Environment: dev
+  userData: |
+    ---
+    apiVersion: node.eks.aws/v1alpha1
+    kind: NodeConfig
+    spec:
+      kubelet:
+        maxPodsExpression: (NUM_NETWORK_INTERFACES - 1) * (IPv4_ADDRESSES_PER_INTERFACE - 1) + 2
