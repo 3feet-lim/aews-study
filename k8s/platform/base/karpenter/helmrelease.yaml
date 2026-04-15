@@ -17,3 +17,9 @@ spec:
       clusterName: CLUSTER_NAME
       clusterEndpoint: CLUSTER_ENDPOINT
       interruptionQueue: SQS_QUEUE_NAME
+    tolerations:
+      - key: tier
+        value: platform
+        effect: NoSchedule
+    nodeSelector:
+      tier: platform

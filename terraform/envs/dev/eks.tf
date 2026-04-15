@@ -165,6 +165,13 @@ module "eks_ng" {
 
   update_config = { max_unavailable = 1 }
 
+  labels = { tier = "platform" }
+  taints = [{
+    key    = "tier"
+    value  = "platform"
+    effect = "NO_SCHEDULE"
+  }]
+
   tags = { Environment = "dev" }
 
   # Custom Networking(ENIConfig)이 먼저 적용된 후 노드가 뜨도록

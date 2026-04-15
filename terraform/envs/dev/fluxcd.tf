@@ -10,6 +10,15 @@ resource "helm_release" "flux" {
   namespace        = "flux-system"
   create_namespace = true
 
+  values = [yamlencode({
+    helmController          = { tolerations = [{ key = "tier", value = "platform", effect = "NoSchedule" }], nodeSelector = { tier = "platform" } }
+    kustomizeController     = { tolerations = [{ key = "tier", value = "platform", effect = "NoSchedule" }], nodeSelector = { tier = "platform" } }
+    sourceController        = { tolerations = [{ key = "tier", value = "platform", effect = "NoSchedule" }], nodeSelector = { tier = "platform" } }
+    notificationController  = { tolerations = [{ key = "tier", value = "platform", effect = "NoSchedule" }], nodeSelector = { tier = "platform" } }
+    imageAutomationController = { tolerations = [{ key = "tier", value = "platform", effect = "NoSchedule" }], nodeSelector = { tier = "platform" } }
+    imageReflectionController = { tolerations = [{ key = "tier", value = "platform", effect = "NoSchedule" }], nodeSelector = { tier = "platform" } }
+  })]
+
   depends_on = [module.eks, module.eks_ng]
 }
 
