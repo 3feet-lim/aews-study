@@ -18,3 +18,7 @@ spec:
         volumeSize: 30Gi
         volumeType: gp3
         deleteOnTermination: true
+  tags:
+    Name: PROJECT_NAME-karpenter-node
+    managed-by: karpenter
+    Environment: dev

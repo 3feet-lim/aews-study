@@ -7,3 +7,5 @@ spec:
   securityGroupSelectorTerms:
     - tags:
         Name: smlim-gitops-dev-eks-node-sg
+  tags:
+    Name: smlim-gitops-dev-karpenter-node
