@@ -28,4 +28,4 @@ spec:
     kind: NodeConfig
     spec:
       kubelet:
-        maxPodsExpression: (NUM_NETWORK_INTERFACES - 1) * (IPv4_ADDRESSES_PER_INTERFACE - 1) + 2
+        maxPodsExpression: "((default_enis - 1) * (ips_per_eni - 1)) + 2"
