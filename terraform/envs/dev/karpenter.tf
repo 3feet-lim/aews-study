@@ -33,6 +33,7 @@ resource "aws_iam_role_policy" "karpenter_controller" {
           "ec2:DescribeInstanceTypes", "ec2:DescribeLaunchTemplates",
           "ec2:DescribeSecurityGroups", "ec2:DescribeSubnets",
           "ec2:RunInstances", "ec2:TerminateInstances",
+          "ec2:DescribeSpotPriceHistory",
           "iam:PassRole", "iam:GetInstanceProfile", "iam:CreateInstanceProfile",
           "iam:DeleteInstanceProfile", "iam:TagInstanceProfile",
           "iam:AddRoleToInstanceProfile", "iam:RemoveRoleFromInstanceProfile",
