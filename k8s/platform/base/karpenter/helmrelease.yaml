@@ -18,6 +18,7 @@ spec:
       clusterEndpoint: CLUSTER_ENDPOINT
       interruptionQueue: SQS_QUEUE_NAME
       reservedENIs: "1"
+    replicas: 1
     tolerations:
       - key: tier
         value: platform
